@@ -29,7 +29,7 @@ namespace SysLogs
         {
             services.AddDbContext<SysLogsDbContext>(options =>
             {
-                options.UseMySQL(Configuration.GetConnectionString("SysLogsDbConnectionString"));
+                options.UseMySql(Configuration.GetConnectionString("SysLogsDbConnectionString"));
             });
 
             services.AddControllers();
