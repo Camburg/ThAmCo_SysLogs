@@ -23,28 +23,28 @@ namespace SystemLogs.Controllers
         [HttpPost]
         public async Task<IActionResult> StoreSystemLog([FromRoute] int componentId, DateTime date, string alertType)
         {
-            
+            return null;
         }
 
-        //Send unfiltered list of logs (Maybe implement pagination or some kind of arbitrary max list size)
+        //Send unfiltered list of logs from database (Maybe implement pagination or some kind of arbitrary max list size)
         [HttpGet]
         public async Task<IActionResult> GetAllSystemLogs()
         {
-
+            return null;
         }
 
         //Send list of event logs specifically for the given user
         [HttpGet]
-        public async Task<IActionResult> GetUserSystemLogs([FromRoute] string user)
+        public async Task<IActionResult> GetAllUserSystemLogs([FromRoute] string user)
         {
-
+            return null;
         }
 
         //Send Filtered list of logs
         [HttpGet]
         public async Task<IActionResult> GetFilteredSystemLogs([FromBody] int componentId, DateTime date, string alertType)
         {
-
+            return null;
         }
     }
 }
