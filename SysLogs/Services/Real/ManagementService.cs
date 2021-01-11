@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SystemLogs.Models;
+using SysLogs.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SysLogs.Data;
+using SysLogs.Enums;
 using SysLogs.Interfaces;
 
 namespace SysLogs.Services.Real 
@@ -13,7 +15,7 @@ namespace SysLogs.Services.Real
     {
         private readonly SysLogsDbContext _context;
 
-        ManagementService(SysLogsDbContext context)
+        public ManagementService(SysLogsDbContext context)
         {
             _context = context;
         }
@@ -21,20 +23,31 @@ namespace SysLogs.Services.Real
         //Send unfiltered list of logs from database (Maybe implement pagination or some kind of arbitrary max list size)
         public async Task<List<SystemLog>> GetAllSystemLogs()
         {
-
-            return null;
-        }
-
-        //Send list of event logs specifically for the given user
-        public async Task<List<SystemLog>> GetAllUserSystemLogs(string user)
-        {
-            return null;
+            var systemLogs = await _context.SystemLogs.ToListAsync();
+            return systemLogs;
         }
 
         //Send Filtered list of logs
-        public async Task<List<SystemLog>> GetFilteredSystemLogs(int componentId, DateTime date, string alertType)
+        public async Task<List<SystemLog>> GetFilteredSystemLogs(Filter filter)
         {
-            return null;
+            var systemLogs = await GetAllSystemLogs();
+            if (filter.Date != default)
+            {
+                systemLogs = systemLogs.Where(x => x.Date == filter.Date).ToList();
+            }
+            if (filter.ComponentName != null)
+            {
+                systemLogs = systemLogs.Where(x => x.ComponentName.Equals(filter.ComponentName)).ToList();
+            }
+            if (filter.AlertType != AlertType.NONE)
+            {
+                systemLogs = systemLogs.Where(x => x.AlertType == filter.AlertType).ToList();
+            }
+            if (filter.Role != null)
+            {
+                systemLogs = systemLogs.Where(x => x.Role.Equals(filter.Role)).ToList();
+            }
+            return systemLogs;
         }
     }
 }

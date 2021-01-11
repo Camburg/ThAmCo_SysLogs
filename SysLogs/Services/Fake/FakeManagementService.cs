@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SystemLogs.Models;
+using SysLogs.Models;
 using Microsoft.AspNetCore.Mvc;
 using SysLogs.Data;
 using SysLogs.Interfaces;
@@ -18,14 +18,8 @@ namespace SysLogs.Services.Fake
             return null;
         }
 
-        //Send list of event logs specifically for the given user
-        public async Task<List<SystemLog>> GetAllUserSystemLogs(string user)
-        {
-            return null;
-        }
-
         //Send Filtered list of logs
-        public async Task<List<SystemLog>> GetFilteredSystemLogs(int componentId, DateTime date, string alertType)
+        public async Task<List<SystemLog>> GetFilteredSystemLogs(Filter filter)
         {
             return null;
         }

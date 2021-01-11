@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SystemLogs.Models;
+using SysLogs.Models;
 using SysLogs.Data;
 using SysLogs.Interfaces;
 
@@ -12,7 +12,7 @@ namespace SysLogs.Services.Real
     {
         private readonly SysLogsDbContext _context;
 
-        SysLogService(SysLogsDbContext context)
+        public SysLogService(SysLogsDbContext context)
         {
             _context = context;
         }

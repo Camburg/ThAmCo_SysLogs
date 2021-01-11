@@ -45,8 +45,7 @@ namespace SysLogs
             }
             else
             {
-                //Change this back to Real later
-                AddMockServices(services);
+                AddRealServices(services);
             }
 
             services.AddControllers();

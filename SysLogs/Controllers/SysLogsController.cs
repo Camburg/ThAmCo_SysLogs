@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SystemLogs.Models;
+using SysLogs.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SysLogs.Data;
@@ -29,7 +29,7 @@ namespace SystemLogs.Controllers
         [HttpPut("/logs/")]
         public async Task<IActionResult> PutSystemLog(SystemLog systemLog)
         {
-            bool response = _sysLogService.PutSystemLog(systemLog).Result;
+            bool response = await _sysLogService.PutSystemLog(systemLog);
 
             if (response)
             {
@@ -45,22 +45,32 @@ namespace SystemLogs.Controllers
         [HttpGet("/logs/")]
         public async Task<IActionResult> GetAllSystemLogs()
         {
+            List<SystemLog> response = await _managementService.GetAllSystemLogs();
 
-            return null;
-        }
-
-        //Send list of event logs specifically for the given user
-        [HttpGet("/logs/user/{user}")]
-        public async Task<IActionResult> GetAllUserSystemLogs([FromRoute] string user)
-        {
-            return null;
+            if (response.Any())
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         //Send Filtered list of logs
-        [HttpGet("/logs/get/{componentId}/{date}/{alertType}")]
-        public async Task<IActionResult> GetFilteredSystemLogs(int componentId, DateTime date, string alertType)
+        [HttpGet("/logs/filtered")]
+        public async Task<IActionResult> GetFilteredSystemLogs(Filter filter)
         {
-            return null;
+            List<SystemLog> response = await _managementService.GetFilteredSystemLogs(filter);
+
+            if (response.Any())
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
