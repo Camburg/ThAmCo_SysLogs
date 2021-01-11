@@ -14,10 +14,10 @@ namespace SystemLogs.Controllers
     [Route("api/[controller]")]
     public class SysLogsController : ControllerBase
     {
-
         private readonly ILogger<SysLogsController> _logger;
         private readonly IManagementService _managementService;
         private readonly ISysLogService _sysLogService;
+
         public SysLogsController(ILogger<SysLogsController> logger, IManagementService managementService, ISysLogService sysLogService)
         {
             _logger = logger;
@@ -26,8 +26,8 @@ namespace SystemLogs.Controllers
         }
 
         //Store any system logs sent here in internal database
-        [HttpPut("/logs/")]
-        public async Task<IActionResult> PutSystemLog(SystemLog systemLog)
+        [HttpPut("logs")]
+        public async Task<IActionResult> PutSystemLog([FromBody] SystemLog systemLog)
         {
             bool response = await _sysLogService.PutSystemLog(systemLog);
 
@@ -42,12 +42,12 @@ namespace SystemLogs.Controllers
         }
 
         //Send unfiltered list of logs from database (Maybe implement pagination or some kind of arbitrary max list size)
-        [HttpGet("/logs/")]
+        [HttpGet("logs")]
         public async Task<IActionResult> GetAllSystemLogs()
         {
             List<SystemLog> response = await _managementService.GetAllSystemLogs();
 
-            if (response.Any())
+            if (response != null)
             {
                 return Ok(response);
             }
@@ -58,7 +58,7 @@ namespace SystemLogs.Controllers
         }
 
         //Send Filtered list of logs
-        [HttpGet("/logs/filtered")]
+        [HttpGet("logs/filtered")]
         public async Task<IActionResult> GetFilteredSystemLogs(Filter filter)
         {
             List<SystemLog> response = await _managementService.GetFilteredSystemLogs(filter);

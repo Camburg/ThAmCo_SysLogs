@@ -81,10 +81,8 @@ namespace SysLogs
         }
         private void AddRealServices(IServiceCollection services)
         {
-            services.AddSingleton<IManagementService, ManagementService>();
-            services.AddSingleton<ISysLogService, SysLogService>();
-            services.AddHttpClient<IManagementService, ManagementService>("Management Service");
-            services.AddHttpClient<ISysLogService, SysLogService>("System Log Service");
+            services.AddScoped<IManagementService, ManagementService>();
+            services.AddScoped<ISysLogService, SysLogService>();
         }
     }
 }
