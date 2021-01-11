@@ -6,6 +6,7 @@ using SystemLogs.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SysLogs.Data;
+using SysLogs.Interfaces;
 
 namespace SystemLogs.Controllers
 {
@@ -15,31 +16,24 @@ namespace SystemLogs.Controllers
     {
 
         private readonly ILogger<SysLogsController> _logger;
-        private readonly SysLogsDbContext _context;
-
-        public SysLogsController(ILogger<SysLogsController> logger, SysLogsDbContext context)
+        private readonly IManagementService _managementService;
+        private readonly ISysLogService _sysLogService;
+        public SysLogsController(ILogger<SysLogsController> logger, IManagementService managementService, ISysLogService sysLogService)
         {
             _logger = logger;
-            _context = context;
+            _managementService = managementService;
+            _sysLogService = sysLogService;
         }
 
         //Store any system logs sent here in internal database
         [HttpPut("/logs/")]
         public async Task<IActionResult> PutSystemLog(SystemLog systemLog)
         {
-            systemLog.ComponentName = systemLog.ComponentName.ToLower();
-            if (CheckValidComponent(systemLog.ComponentName))
+            bool response = _sysLogService.PutSystemLog(systemLog).Result;
+
+            if (response)
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(systemLog);
-                    await _context.SaveChangesAsync();
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                return Ok();
             }
             else
             {
@@ -67,24 +61,6 @@ namespace SystemLogs.Controllers
         public async Task<IActionResult> GetFilteredSystemLogs(int componentId, DateTime date, string alertType)
         {
             return null;
-        }
-
-        private bool CheckValidComponent(string component)
-        {
-            var validComponents = new List<string>
-            {
-                "accounts",
-                "profile",
-                "orders",
-                "invoices",
-                "catalogue",
-                "reviews",
-                "stockmanagement",
-                "resales",
-                "management",
-                "systemlogs"
-            };
-            return validComponents.Contains(component);
         }
     }
 }
