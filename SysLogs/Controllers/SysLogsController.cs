@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using SysLogs.Data;
 using SysLogs.Interfaces;
 
-namespace SystemLogs.Controllers
+namespace SysLogs.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
